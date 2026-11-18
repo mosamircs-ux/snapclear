@@ -1,0 +1,86 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Luminous Rounded Frame inside adaptive safe zone -->
+    <path
+        android:fillColor="#16FFFFFF"
+        android:pathData="M35,23 L73,23 C79.6,23 85,28.4 85,35 L85,73 C85,79.6 79.6,85 73,85 L35,85 C28.4,85 23,79.6 23,73 L23,35 C23,28.4 28.4,23 35,23 Z"
+        android:strokeWidth="1.8">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:endX="85"
+                android:endY="85"
+                android:startX="23"
+                android:startY="23"
+                android:type="linear">
+                <item android:color="#DC34D399" android:offset="0.0" />
+                <item android:color="#D006B6D4" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Download Arrow Stem -->
+    <path
+        android:pathData="M54,34 L54,57"
+        android:strokeLineCap="round"
+        android:strokeWidth="6.8">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:endX="54"
+                android:endY="62"
+                android:startX="54"
+                android:startY="32"
+                android:type="linear">
+                <item android:color="#34D399" android:offset="0.0" />
+                <item android:color="#06B6D4" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Download Arrow Chevron -->
+    <path
+        android:pathData="M40.5,48.5 L54,62 L67.5,48.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeWidth="6.5">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:endX="68"
+                android:endY="62"
+                android:startX="40"
+                android:startY="48"
+                android:type="linear">
+                <item android:color="#10B981" android:offset="0.0" />
+                <item android:color="#06B6D4" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Media Tray Base -->
+    <path
+        android:pathData="M35,65 L35,71.5 C35,73.2 36.4,74.5 38.2,74.5 L69.8,74.5 C71.6,74.5 73,73.2 73,71.5 L73,65"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeWidth="5.2">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:endX="73"
+                android:endY="74"
+                android:startX="35"
+                android:startY="74"
+                android:type="linear">
+                <item android:color="#10B981" android:offset="0.0" />
+                <item android:color="#22D3EE" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Lumina Sparkle -->
+    <path
+        android:fillColor="#EEA7F3D0"
+        android:pathData="M73,32 Q73,35.5 76.5,35.5 Q73,35.5 73,39 Q73,35.5 69.5,35.5 Q73,35.5 73,32 Z" />
+</vector>

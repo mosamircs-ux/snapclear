@@ -2,14 +2,36 @@ plugins {
     id 'com.android.application'
 }
 
+def keystorePropsFile = rootProject.file("keystore.properties")
+def keystoreProps = new Properties()
+if (keystorePropsFile.exists()) {
+    keystorePropsFile.withInputStream { keystoreProps.load(it) }
+}
+
+def admobPropsFile = rootProject.file("admob.properties")
+def admobProps = new Properties()
+if (admobPropsFile.exists()) {
+    admobPropsFile.withInputStream { admobProps.load(it) }
+}
+
+// Official Google AdMob Test IDs (always used for debug builds)
+def testAppId = "ca-app-pub-3940256099942544~3347511713"
+def testBannerId = "ca-app-pub-3940256099942544/9214589741"
+def testInterstitialId = "ca-app-pub-3940256099942544/1033173712"
+
+// Production AdMob IDs from admob.properties (falls back to test IDs until configured)
+def releaseAppId = admobProps.getProperty("ADMOB_APP_ID", testAppId)
+def releaseBannerId = admobProps.getProperty("ADMOB_BANNER_ID", testBannerId)
+def releaseInterstitialId = admobProps.getProperty("ADMOB_INTERSTITIAL_ID", testInterstitialId)
+
 android {
-    namespace 'com.snapclean.app'
-    compileSdk 34
+    namespace 'com.luminasaver.media'
+    compileSdk 36
 
     defaultConfig {
-        applicationId "com.snapclean.app"
+        applicationId "com.luminasaver.saver"
         minSdk 24
-        targetSdk 34
+        targetSdk 36
         versionCode 1
         versionName "1.0.0"
 
@@ -18,13 +40,42 @@ android {
         }
     }
 
-    buildTypes {
+    buildFeatures {
+        buildConfig true
+    }
+
+    signingConfigs {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (keystorePropsFile.exists() && keystoreProps.getProperty("storeFile")) {
+                storeFile rootProject.file(keystoreProps.getProperty("storeFile"))
+                storePassword keystoreProps.getProperty("storePassword")
+                keyAlias keystoreProps.getProperty("keyAlias")
+                keyPassword keystoreProps.getProperty("keyPassword")
+            }
         }
     }
-    
+
+    buildTypes {
+        debug {
+            manifestPlaceholders = [admobAppId: testAppId]
+            buildConfigField "String", "ADMOB_BANNER_ID", "\"${testBannerId}\""
+            buildConfigField "String", "ADMOB_INTERSTITIAL_ID", "\"${testInterstitialId}\""
+            buildConfigField "boolean", "USING_TEST_ADS", "true"
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (keystorePropsFile.exists() && keystoreProps.getProperty("storeFile")) {
+                signingConfig signingConfigs.release
+            }
+            manifestPlaceholders = [admobAppId: releaseAppId]
+            buildConfigField "String", "ADMOB_BANNER_ID", "\"${releaseBannerId}\""
+            buildConfigField "String", "ADMOB_INTERSTITIAL_ID", "\"${releaseInterstitialId}\""
+            buildConfigField "boolean", "USING_TEST_ADS", "${releaseAppId == testAppId}"
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -38,11 +89,16 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.11.0'
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    
-    // On-device standalone video downloading engine (Seal / YTDLnis core)
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.activity:activity:1.10.1'
+    implementation 'androidx.core:core:1.15.0'
+
+    // Google Mobile Ads (AdMob) + User Messaging Platform (GDPR/EEA Consent)
+    implementation 'com.google.android.gms:play-services-ads:23.6.0'
+    implementation 'com.google.android.ump:user-messaging-platform:3.1.0'
+
+    // On-device standalone media & FFmpeg processing engine
     implementation 'io.github.junkfood02.youtubedl-android:library:0.18.1'
     implementation 'io.github.junkfood02.youtubedl-android:ffmpeg:0.18.1'
 }
